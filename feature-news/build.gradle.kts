@@ -24,6 +24,7 @@ dependencies {
     implementation(project(":common"))
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.swiperefresh)
 
     testImplementation(project(":testUtils"))
     testImplementation(libs.junit5.api)
