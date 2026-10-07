@@ -2,7 +2,9 @@ package com.harbornews.weather.data
 
 import com.harbornews.weather.data.db.ConditionsEntity
 import com.harbornews.weather.data.dto.ConditionsDto
+import com.harbornews.weather.data.dto.HourlyDto
 import com.harbornews.weather.domain.model.Conditions
+import com.harbornews.weather.domain.model.HourlyEntry
 import kotlin.math.roundToInt
 
 class ConditionsMapper {
@@ -30,4 +32,10 @@ class ConditionsMapper {
         summary = entity.summary,
         updatedAtMillis = entity.updatedAtMillis,
     )
+
+    fun toHourly(dto: HourlyDto): HourlyEntry? {
+        val hour = dto.hour ?: return null
+        val temp = dto.tempF ?: return null
+        return HourlyEntry(hour, temp.roundToInt())
+    }
 }
