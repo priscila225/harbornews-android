@@ -26,7 +26,9 @@ class KoinModulesTest {
 
     @Test
     fun `news module is complete`() {
-        newsModule.verify(extraTypes = listOf(Retrofit::class, StationConfig::class, DispatcherProvider::class))
+        newsModule.verify(
+            extraTypes = listOf(Context::class, Retrofit::class, StationConfig::class, DispatcherProvider::class),
+        )
     }
 
     @Test
