@@ -1,0 +1,38 @@
+# Defaults are inherited (buildUponDefaultConfig = true); only deviations are listed.
+build:
+  maxIssues: 1000
+
+style:
+  MaxLineLength:
+    maxLineLength: 130
+  WildcardImport:
+    active: false
+  MagicNumber:
+    active: true
+    ignoreNamedArgument: true
+    ignorePropertyDeclaration: true
+    ignoreCompanionObjectPropertyDeclaration: true
+  ReturnCount:
+    max: 3
+
+complexity:
+  LongMethod:
+    threshold: 60
+  CyclomaticComplexMethod:
+    threshold: 15
+  LongParameterList:
+    functionThreshold: 6
+    constructorThreshold: 8
+  TooManyFunctions:
+    thresholdInFiles: 20
+    thresholdInClasses: 20
+
+naming:
+  FunctionNaming:
+    ignoreAnnotated: ['Composable']
+    excludes: ['**/test/**']
+  TopLevelPropertyNaming:
+    constantPattern: '[A-Z][A-Za-z0-9_]*'
+
+comments:
+  active: false
