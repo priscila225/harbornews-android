@@ -12,7 +12,7 @@ import com.harbornews.weather.domain.WeatherRepository
 import com.harbornews.weather.presentation.WeatherViewModel
 import com.harbornews.weather.ui.ComposeWeatherStripFactory
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
