@@ -14,7 +14,7 @@ Four layers per feature module, dependencies point inward:
 
 ## Tech stack
 
-Kotlin 2.1, Gradle Kotlin DSL with a version catalog, Koin 4, Retrofit + OkHttp + Gson, LiveData (not StateFlow) for UI state, Room, WorkManager, Compose for new UI only, Timber.
+Kotlin 2.1, Gradle Kotlin DSL with a version catalog, Koin 4, Retrofit + OkHttp + Gson, LiveData for UI state (data-layer streams such as Room observers may be exposed as `Flow` and are collected in the UI only inside `repeatOnLifecycle`), Room, WorkManager, Compose for new UI only, Timber.
 Tests: JUnit 5, MockK, Kotest assertions, kotlinx-coroutines-test, Robolectric (via the vintage engine).
 
 ## Conventions
