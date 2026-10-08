@@ -29,6 +29,8 @@ class NewsActivity : AppCompatActivity(), AdsListener {
         binding.articles.adapter = adapter
         binding.headerContainer.addView(weatherStripFactory.create(this))
 
+        binding.refresh.setOnRefreshListener { viewModel.load() }
+        binding.sections.setOnCheckedChangeListener { _, checkedId -> viewModel.selectSection(sectionFor(checkedId)) }
         viewModel.state.observe(this, ::render)
         viewModel.events.observe(this) { event ->
             when (val content = event.consume()) {
@@ -53,8 +55,20 @@ class NewsActivity : AppCompatActivity(), AdsListener {
         Timber.d("Ad loaded")
     }
 
+    private fun sectionFor(checkedId: Int): String? = when (checkedId) {
+        binding.sectionLocal.id -> SECTION_LOCAL
+        binding.sectionSports.id -> SECTION_SPORTS
+        else -> null
+    }
+
     private fun render(state: NewsViewState) {
+        binding.refresh.isRefreshing = false
         binding.progress.visibility = if (state is NewsViewState.Loading) View.VISIBLE else View.GONE
         if (state is NewsViewState.Success) adapter.submitList(state.articles)
+    }
+
+    private companion object {
+        const val SECTION_LOCAL = "local"
+        const val SECTION_SPORTS = "sports"
     }
 }
