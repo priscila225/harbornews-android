@@ -1,5 +1,6 @@
 package com.harbornews.news.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -20,7 +21,12 @@ class NewsActivity : AppCompatActivity(), AdsListener {
     private val adsManager: AdsManager by inject()
     private val weatherStripFactory: WeatherStripFactory by inject()
     private lateinit var binding: ActivityNewsBinding
-    private val adapter = ArticleAdapter { Timber.d("Article tapped: %s", it.id) }
+    private val adapter = ArticleAdapter { article ->
+        Timber.d("Article tapped: %s", article.id)
+        startActivity(
+            Intent(this, ArticleDetailActivity::class.java).putExtra(ArticleDetailActivity.EXTRA_ARTICLE_ID, article.id),
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
