@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.harbornews.weather.domain.WeatherRepository
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import com.harbornews.common.Result as AppResult
 
 class WeatherSyncWorker(
     context: Context,
@@ -14,8 +16,10 @@ class WeatherSyncWorker(
 ) : CoroutineWorker(context, params), KoinComponent {
     private val repository: WeatherRepository by inject()
 
-    override suspend fun doWork(): Result = when (repository.refresh()) {
-        is AppResult.Success -> Result.success()
-        is AppResult.Failure -> Result.retry()
+    /** Kicks the refresh off so the periodic job returns quickly. */
+    @OptIn(DelicateCoroutinesApi::class)
+    override suspend fun doWork(): Result {
+        GlobalScope.launch { repository.refresh() }
+        return Result.success()
     }
 }

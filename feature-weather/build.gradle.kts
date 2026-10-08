@@ -10,7 +10,10 @@ android {
     namespace = "com.harbornews.weather"
     compileSdk = 35
     defaultConfig { minSdk = 28 }
-    buildFeatures { compose = true }
+    buildFeatures {
+        compose = true
+        viewBinding = true
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -33,6 +36,7 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.compose.livedata)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.koin.compose)
     implementation(libs.androidx.room.runtime)

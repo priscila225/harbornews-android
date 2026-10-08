@@ -1,6 +1,7 @@
 package com.harbornews.weather.data
 
 import com.harbornews.weather.data.dto.ConditionsDto
+import com.harbornews.weather.data.dto.HourlyDto
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.DisplayName
@@ -29,5 +30,12 @@ class ConditionsMapperTest {
         val conditions = mapper.toDomain("s1", ConditionsDto(50.0, "Fog", 5L))!!
 
         mapper.toDomain(mapper.toEntity(conditions)) shouldBe conditions
+    }
+
+    @Test
+    fun `hourly rows need both an hour and a temperature`() {
+        mapper.toHourly(HourlyDto(9, 61.4))?.temperatureF shouldBe 61
+        mapper.toHourly(HourlyDto(null, 61.4)).shouldBeNull()
+        mapper.toHourly(HourlyDto(9, null)).shouldBeNull()
     }
 }

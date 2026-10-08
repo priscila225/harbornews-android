@@ -6,6 +6,10 @@ import com.harbornews.common.StationConfig
 import com.harbornews.weather.data.db.ConditionsDao
 import com.harbornews.weather.domain.WeatherRepository
 import com.harbornews.weather.domain.model.Conditions
+import com.harbornews.weather.domain.model.HourlyEntry
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class WeatherRepositoryImpl(
@@ -19,12 +23,22 @@ class WeatherRepositoryImpl(
         dao.get(station.stationId)?.let(mapper::toDomain)
     }
 
-    override suspend fun refresh(): Result<Conditions> = withContext(dispatchers.bg) {
+    override suspend fun refresh(): Result<Conditions> = withContext(Dispatchers.IO) {
         Result.runCatching {
             val dto = api.current(station.stationId)
             val conditions = checkNotNull(mapper.toDomain(station.stationId, dto)) { "No temperature in response" }
             dao.upsert(mapper.toEntity(conditions))
             conditions
         }
+    }
+
+    override fun observe(): Flow<Conditions?> = dao.observe(station.stationId).map { it?.let(mapper::toDomain) }
+
+    override suspend fun hourly(): Result<List<HourlyEntry>> = withContext(dispatchers.bg) {
+        Result.runCatching { api.hourly(station.stationId).mapNotNull(mapper::toHourly).take(HOURS_SHOWN) }
+    }
+
+    private companion object {
+        const val HOURS_SHOWN = 6
     }
 }
