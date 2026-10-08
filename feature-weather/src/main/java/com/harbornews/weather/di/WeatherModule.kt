@@ -23,6 +23,6 @@ val weatherModule = module {
     factory { ConditionsMapper() }
     single<WeatherRepository> { WeatherRepositoryImpl(get(), get(), get(), get(), get()) }
     factory { GetCurrentConditionsUseCase(get()) }
-    viewModel { WeatherViewModel(get(), get()) }
+    viewModel { WeatherViewModel(get()) }
     factory<WeatherStripFactory> { ComposeWeatherStripFactory() }
 }
